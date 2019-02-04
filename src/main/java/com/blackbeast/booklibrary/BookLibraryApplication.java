@@ -1,4 +1,4 @@
-package com.RadoslawaUss.booklibrary;
+package com.blackbeast.booklibrary;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

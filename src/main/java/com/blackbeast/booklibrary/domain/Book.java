@@ -1,43 +1,53 @@
-package com.RadoslawaUss.booklibrary.domain;
+package com.blackbeast.booklibrary.domain;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
-import java.util.Random;
-
-//@Component
-//@Scope("prototype")//utworzą się 2 różne obiekty; zasięg - jak obiekt ma być tworzony - singleton cy może istnieć wiele instacji w kontekście
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
-//@Table(name = "book")
-
 public class Book {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)//automatycznie nadaje id
-    //@Column(name = "BookTitle")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @NotNull
+    @Size(min=2, message = "Tytuł musi posiadać co najmniej 2 litery")
     private String title;
+
+    @NotNull(message ="Rok wydania musi być z przedziału 1-9999" )
+    @Range(min=1, max = 9999, message = "Rok wydania musi być z przedziału 1-9999")
     private int year;
     private String publisher;
     private String isbn;
 
-    public  Book(){
-        //this.title = "Ogniem i mieczem";
-        //this.year = new Random(). nextInt(2000);
-        //this.publisher = "Wydawca 123";
-        //this.isbn = "ASD123123";
+    @OneToOne
+    private Author author;
+
+    public Book(){
+
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Book(String title, int year, String publisher, String isbn) {
+    public Book(String title, int year, String publisher, String isbn, Author author) {
         this.title = title;
         this.year = year;
         this.publisher = publisher;
         this.isbn = isbn;
+        this.author = author;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setTitle(String title) {
@@ -68,13 +78,12 @@ public class Book {
         this.isbn = isbn;
     }
 
-
-    public int getId() {
-        return id;
+    public Author getAuthor() {
+        return author;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     @Override
@@ -87,4 +96,3 @@ public class Book {
                 '}';
     }
 }
-
