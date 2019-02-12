@@ -40,4 +40,11 @@ public class BookRepository {
             em.remove(book);
     }
 
+
+    public Collection<Book> getBooksByAuthor(String authorName) {
+        return em.createQuery("SELECT DISTINCT b from Book b INNER JOIN b.author a WHERE a.name= :authorName", Book.class)
+                .setParameter("authorName", authorName).getResultList();
+    }
+
+
 }
