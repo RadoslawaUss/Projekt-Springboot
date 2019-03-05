@@ -5,6 +5,8 @@ import com.blackbeast.booklibrary.domain.User;
 import com.blackbeast.booklibrary.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,8 +22,9 @@ public class UserService {
             User user = userRepository.getUser(username);
 
             if (user == null) {
+                PasswordEncoder pe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-                User newUser = new User(username, password);
+                User newUser = new User(username, pe.encode(password));
                 userRepository.addUser(newUser);
 
             }

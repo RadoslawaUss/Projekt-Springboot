@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -18,6 +19,12 @@ public class BookController {
 
     @Autowired
     BookService bookService;
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String redirectToMainPage(){
+        return "redirect:/books";
+
+    }
 
     @RequestMapping(value = "/books", method = RequestMethod.GET)
     public String getBooks(Model model){
