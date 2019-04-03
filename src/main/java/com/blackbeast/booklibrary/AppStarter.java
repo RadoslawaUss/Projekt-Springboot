@@ -26,7 +26,12 @@ public class AppStarter implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println(">>>>>> " +hireService.getHiresByBookId(4).size());
-
+        /*Hire hire = new Hire();
+        hire.setHireDate(new Date());
+        hire.setPlannedGiveBackDate(new Date());
+        hire.setHiredBook(bookService.getBook(22));
+        hire.setHireUser(user)
+*/
 
     }
 
