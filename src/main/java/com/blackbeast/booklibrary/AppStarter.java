@@ -14,28 +14,23 @@ import org.springframework.stereotype.Component;
 @Component
 @PropertySource("classpath:custom.properties")
 public class AppStarter implements CommandLineRunner {
-
     @Autowired
     BookService bookService;
 
     @Autowired
     UserService userService;
+
     @Autowired
     HireService hireService;
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println(">>>>>> " +hireService.getHiresByBookId(4).size());
-        /*Hire hire = new Hire();
-        hire.setHireDate(new Date());
-        hire.setPlannedGiveBackDate(new Date());
-        hire.setHiredBook(bookService.getBook(22));
-        hire.setHireUser(user)
-*/
+
 
     }
 
-    public void init(){
+
+      public void init(){
         Book book = new Book("Ogniem i mieczem", 2000, "PWN", "78535635634", new Author("Henryk Sienkiewicz"));
         bookService.saveBook(book);
 

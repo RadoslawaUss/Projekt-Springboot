@@ -10,11 +10,19 @@
     <script th:src="@{/webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
 </head>
 <body>
+<div th:if="${hireStatus==false}"class ="alert alert-danger" role="alert">
+    <a th:text="${'Nie można wypożyczyć książki.'}"></a>
+
+</div>
+<div th:if="${hireStatus==true}"class ="alert alert-success" role="alert">
+    <a th:text="${'Książka została wypożyczona. Data zwrotu: ' + #dates.format(giveBackDate, 'dd-MM-yyyy') + '.'}"></a>
+
+</div>
+
 <div class="container">
     <div class = "float-left">
-        <p th:text="${'Witaj, '+ user.firstName + ' '+user.lastName +' ('+ user.username+')'} ">
-
-        </p>
+        <a th:text="${'Witaj, '+ user.fullName +' ('+ user.username+')'} "></a>
+        <a th:href="${'/user/hires'}">Profil użytkownika</a>
     </div>
     <div class="row">
     <form action="#" th:action="@{/logout}" method="post">
@@ -34,14 +42,16 @@
         <th></th>
         </thead>
         <tbody th:each="element : ${books}">
-        <tr>
+        <tr th:classappend="${element.hireStatus} ? table-warning : table-success">
             <td th:text=${element.title}></td>
             <td th:text=${element.year}></td>
             <td th:text=${element.publisher}></td>
             <td th:text=${element.isbn}></td>
-            <td th:text=${element.author.name}></td>
+            <td th:text=${element.authorName}></td>
             <td>
-                <a th:href="${'/books/hire/' + element.id}">Wypożycz</a>
+                <a th:if="${element.hireStatus==true}"th:text="${'Wypożyczona do: '+ #dates.format(element.giveBackDate, 'dd-MM-yyyy')}"></a>
+                <a th:if="${element.hireStatus==false}"th:href="${'/books/hire/' + element.id}">Wypożycz</a>
+
                 <br>
                 <a th:href="${'/books/hires/' + element.id}">Pokaż</a>
             </td>

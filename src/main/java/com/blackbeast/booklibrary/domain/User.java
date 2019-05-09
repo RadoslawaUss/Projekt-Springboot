@@ -9,7 +9,7 @@ public class User {
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        private int id;
+        private Integer id;
         private String username;
         private String password;
         private Boolean enabled;
@@ -32,11 +32,11 @@ public class User {
 
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
