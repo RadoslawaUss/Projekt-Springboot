@@ -32,25 +32,26 @@ public class HireService {
     @Value("${library.hire.giveBackDays}")
     Integer giveBackDays;
 
-    public List<Hire> getHiresByBookId(Integer id){
+    public List<Hire> getHiresByBookId(Integer id) {
         return hireRepository.findByHiredBook_Id(id);
 
     }
-    public Hire hire(Integer bookId){
+
+    public Hire hire(Integer bookId) {
         boolean isBookAvailable = hireRepository.findBookByIdAndNotGiveBack(bookId).isEmpty();
 
-        if(isBookAvailable) {
-            Book book= bookRepository.getBook(bookId);
-            User user= userService.getLoggedUser();
+        if (isBookAvailable) {
+            Book book = bookRepository.getBook(bookId);
+            User user = userService.getLoggedUser();
 
-            if(book !=null && user!= null){
+            if (book != null && user != null) {
                 Hire hire = new Hire();
                 hire.setHiredBook(book);
                 hire.setHireUser(user);
 
 
-                Date hireDate= new Date();
-                Date plannedGiveBackDate= DateUtils.addDaysToDate(hireDate,giveBackDays);
+                Date hireDate = new Date();
+                Date plannedGiveBackDate = DateUtils.addDaysToDate(hireDate, giveBackDays);
 
                 hire.setHireDate(hireDate);
                 hire.setPlannedGiveBackDate(plannedGiveBackDate);
@@ -65,17 +66,25 @@ public class HireService {
         return null;
 
 
-
-        }
-        //Hire hire = new Hire();
-        //hire.setHiredBook(bookRepository.getBook(bookId));
-        //hire.setHireUser(userService.getLoggedUser());
-        //hire.setHireDate(new Date());
+    }
+    //Hire hire = new Hire();
+    //hire.setHiredBook(bookRepository.getBook(bookId));
+    //hire.setHireUser(userService.getLoggedUser());
+    //hire.setHireDate(new Date());
 
     public List<Hire> getHireListByUserId(Integer id) {
         return hireRepository.findByHireUser_Id(id);
     }
-    public void setHireAsGiveBack(Long id){
+
+    public void setHireAsGiveBack(Long id) {
         hireRepository.setHireAsGiveBack(id);
+    }
+
+
+    public List<Hire> getNotGiveBackHireList() {
+        return hireRepository.findHiresNotGiveBack();
+    }
+    public Hire getHireById(Long id){
+        return hireRepository.findById(id).get();
     }
 }
