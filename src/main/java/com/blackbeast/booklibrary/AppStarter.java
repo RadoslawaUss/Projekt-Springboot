@@ -2,7 +2,6 @@ package com.blackbeast.booklibrary;
 
 import com.blackbeast.booklibrary.domain.Author;
 import com.blackbeast.booklibrary.domain.Book;
-import com.blackbeast.booklibrary.repository.BookRepository;
 import com.blackbeast.booklibrary.services.BookService;
 import com.blackbeast.booklibrary.services.HireService;
 import com.blackbeast.booklibrary.services.UserService;

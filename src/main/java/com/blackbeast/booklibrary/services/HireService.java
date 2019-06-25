@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -32,17 +33,20 @@ public class HireService {
     @Value("${library.hire.giveBackDays}")
     Integer giveBackDays;
 
+    @Value("${library.hire.dailyPenalty}")
+    BigDecimal dailyPenalty;
+
     public List<Hire> getHiresByBookId(Integer id) {
         return hireRepository.findByHiredBook_Id(id);
 
     }
 
-    public Hire hire(Integer bookId) {
+    public Hire hire(Integer bookId, User user) {
         boolean isBookAvailable = hireRepository.findBookByIdAndNotGiveBack(bookId).isEmpty();
 
         if (isBookAvailable) {
             Book book = bookRepository.getBook(bookId);
-            User user = userService.getLoggedUser();
+            //User user = userService.getLoggedUser();
 
             if (book != null && user != null) {
                 Hire hire = new Hire();
@@ -55,6 +59,8 @@ public class HireService {
 
                 hire.setHireDate(hireDate);
                 hire.setPlannedGiveBackDate(plannedGiveBackDate);
+
+                hire.setDailyPenalty(dailyPenalty);
 
 
                 hireRepository.save(hire);
