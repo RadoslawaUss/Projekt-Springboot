@@ -5,28 +5,27 @@ import javax.persistence.*;
 @Entity
 public class Role {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        private int id;
-        private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    private String name;
 
-        @ManyToOne
-        @JoinColumn(name = "userId")
-        private User user;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
 
-        public Role(){
-
-        }
+    public Role() {
+    }
 
     public Role(String name) {
         this.name = name;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

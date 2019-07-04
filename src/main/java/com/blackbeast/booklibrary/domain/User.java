@@ -1,35 +1,42 @@
 package com.blackbeast.booklibrary.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class User {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        private Integer id;
-        private String username;
-        private String password;
-        private Boolean enabled;
-        private String firstName;
-        private String lastName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
+    @NotNull(message = "Nazwa użytkownika nie może być pusta")
+    @Size(min=3, message = "Nazwa użytkownika musi posiadać co najmniej 3 litery")
+    private String username;
+
+    @NotNull(message = "Hasło nie może być puste")
+    @Size(min=3, message = "hasło musi posiadać co najmniej 3 znaki")
+    private String password;
+
+    private Boolean enabled;
+    private String firstName;
+    private String lastName;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Role> roles;
 
-
     public User() {
         this.roles = new ArrayList<>();
-            }
+    }
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
         this.enabled = true;
         this.roles = new ArrayList<>();
-
     }
 
     public Integer getId() {
@@ -80,11 +87,9 @@ public class User {
         this.lastName = lastName;
     }
 
-    public void addRole(Role role){
-        if(role !=null)
+    public void addRole(Role role) {
+        if(role != null)
             this.roles.add(role);
-
-
     }
 
     public List<Role> getRoles() {

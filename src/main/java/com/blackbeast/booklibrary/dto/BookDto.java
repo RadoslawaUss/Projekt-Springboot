@@ -48,7 +48,7 @@ public class BookDto {
         return isbn;
     }
 
-    public void setISBN(String isbn) {
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 

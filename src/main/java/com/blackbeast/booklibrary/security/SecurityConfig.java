@@ -11,12 +11,11 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
-import javax.validation.OverridesAttribute;
-import javax.xml.ws.Action;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     DataSource dataSource;
 
@@ -26,32 +25,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     }
 
     @Override
-    public void configure(HttpSecurity httpSecurity) throws Exception{
+    public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
-                .antMatchers("/").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers(
+                        "/register/**",
+                        "/js/**",
+                        "/css/**",
+                        "/img/**",
+                        "/webjars/**").permitAll().
+                and().authorizeRequests()
                 .antMatchers("/books").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers("/books/hires/**").hasAnyAuthority("ADMIN")
-                .antMatchers("/api/**").hasAnyAuthority( "DEV")
-                .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
+                .antMatchers("/api/**").hasAnyAuthority("DEV")
                 .antMatchers("/user/**").hasAnyAuthority("ADMIN", "USER")
-
+                .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and().formLogin().defaultSuccessUrl("/books")
                 .and().exceptionHandling().accessDeniedPage("/access-denied")
                 .and().httpBasic();
 
-
-
-
         //httpSecurity.headers().frameOptions().disable();
-       // httpSecurity.csrf().ignoringAntMatchers("/h2-console/**");
+        //httpSecurity.csrf().ignoringAntMatchers("/h2-console/**");
     }
+
     @Autowired
     public void securityUsers(AuthenticationManagerBuilder auth) throws Exception{
         auth.jdbcAuthentication().dataSource(dataSource)
                 .usersByUsernameQuery("SELECT USERNAME, PASSWORD, ENABLED FROM USER u WHERE u.USERNAME = ?")
                 .authoritiesByUsernameQuery("SELECT USERNAME, NAME FROM USER u JOIN ROLE r ON u.ID = r.USER_ID WHERE u.USERNAME = ?");
-
     }
-
 }

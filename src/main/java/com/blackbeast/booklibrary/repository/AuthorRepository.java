@@ -14,24 +14,24 @@ public class AuthorRepository {
     private EntityManager em;
 
     public Author getAuthor(int id){
-              return  em.find(Author.class, id);
+        return em.find(Author.class, id);
     }
 
     @Transactional
     public void saveAuthor(Author author){
-        if(author!=null)
+        if(author != null)
             em.persist(author);
     }
 
     @Transactional
     public void updateAuthor(Author author){
-        if(author!=null)
+        if(author != null)
             em.merge(author);
     }
-    @Transactional
-    public void removeAuthor(Author author){
-        if(author!=null)
-            em.remove(author);
 
+    @Transactional
+    public void removeAuthor(Author author) {
+        if(author != null)
+            em.remove(author);
     }
 }

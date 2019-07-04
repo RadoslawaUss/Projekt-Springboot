@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-@Data //gettery, settery, konstruktor parametryczny, - nie są potrzebne;
+@Data
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,8 +17,4 @@ public class Payment {
 
     @OneToOne
     private User user;
-
-
-
-
 }

@@ -6,10 +6,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class AccessController {
-    @RequestMapping(value = "/access-denied", method= RequestMethod.GET)
+
+    @RequestMapping(value = "/access-denied", method = RequestMethod.GET)
     public String accessDenied(){
         return "access-denied";
-
     }
-
 }

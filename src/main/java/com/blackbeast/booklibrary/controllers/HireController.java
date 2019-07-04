@@ -20,45 +20,45 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 @Controller
-public class HireController{
+public class HireController {
+
     @Autowired
     BookService bookService;
+
     @Autowired
     HireService hireService;
+
     @Autowired
     UserService userService;
+
     @Autowired
     PaymentService paymentService;
 
+    @RequestMapping(value = "/books/hires/{id}", method = RequestMethod.GET)
+    public String getHires(Model model, @PathVariable("id") Integer id){
+        Book book = bookService.getBook(id);
+        List<Hire> hires = hireService.getHiresByBookId(id);
+        model.addAttribute("book", book);
+        model.addAttribute("hires", hires);
+        return "hires";
+    }
 
-        @RequestMapping(value = "books/hires/{id}", method= RequestMethod.GET)
-        public String getHires(Model model, @PathVariable("id") Integer id){
-            Book book = bookService.getBook(id);
-            List<Hire> hires= hireService.getHiresByBookId(id);
-            model.addAttribute("book", book);
-                  model.addAttribute("hires", hires);
-                  return "hires";
-
-        }
-
-
-    @RequestMapping(value = "/books/hire/{id}", method = RequestMethod.GET)// przechwycenie linka
-    public String hire( Model model, @PathVariable("id") Integer id){
-        Hire hire= hireService.hire(id, userService.getLoggedUser());
+    @RequestMapping(value = "/books/hire/{id}", method = RequestMethod.GET)
+    public String hire(Model model, @PathVariable("id") Integer id){
+        Hire hire = hireService.hire(id, userService.getLoggedUser());
         List<BookDto> books = bookService.convert(bookService.getBooks());
-        UserDto loggedUser=userService.convert(userService.getLoggedUser());
+        UserDto loggedUser = userService.convert(userService.getLoggedUser());
         model.addAttribute("books", books);
         model.addAttribute("user", loggedUser);
-        model.addAttribute("hireStatus", hire!=null);
+        model.addAttribute("hireStatus", hire != null);
 
-        if (hire !=null)
+        if(hire != null)
             model.addAttribute("giveBackDate", hire.getPlannedGiveBackDate());
 
         return "books";
     }
+
     @RequestMapping(value = "/user/hires", method = RequestMethod.GET)
     public String loggedUserHires(Model model) {
         User loggedUser = userService.getLoggedUser();
@@ -67,12 +67,10 @@ public class HireController{
         BigDecimal payment = paymentService.getPaymentSumByUser(loggedUser.getId());
         BigDecimal penalty = paymentService.getPenaltySumByUser(loggedUser.getId());
 
-
         model.addAttribute("user", loggedUserDto);
         model.addAttribute("hires", hires);
         model.addAttribute("payment", payment);
         model.addAttribute("penalty", penalty);
-
 
         return "hires-own";
     }
@@ -86,39 +84,38 @@ public class HireController{
 
         model.addAttribute("user", loggedUserDto);
         model.addAttribute("hires", hires);
-        model.addAttribute("showMessage", "");
         model.addAttribute("sanctionUsers", sanctionUsers);
+        model.addAttribute("showMessage", "");
 
         return "hires-admin";
     }
 
     @RequestMapping(value = "/admin/hires/giveback/{id}", method = RequestMethod.GET)
-
-public String giveBack(Model model, @PathVariable("id") Long id){
+    public String giveBack(Model model, @PathVariable("id") Long id) {
         User loggedUser = userService.getLoggedUser();
         UserDto loggedUserDto = userService.convert(loggedUser);
 
         hireService.setHireAsGiveBack(id);
         String bookName = hireService.getHireById(id).getHiredBook().getTitle();
-        List<Hire> hires = hireService.getNotGiveBackHireList();
-        Map<User, BigDecimal> sanctionUsers = paymentService.getUsersWithNegativeBalance();
 
+        List<Hire> hires = hireService.getNotGiveBackHireList();
+
+        Map<User, BigDecimal> sanctionUsers = paymentService.getUsersWithNegativeBalance();
 
         model.addAttribute("user", loggedUserDto);
         model.addAttribute("hires", hires);
-        model.addAttribute("showMessage", "GIVEBACK");
-        model.addAttribute("bookName",bookName);
         model.addAttribute("sanctionUsers", sanctionUsers);
-
+        model.addAttribute("showMessage", "GIVEBACK");
+        model.addAttribute("bookName", bookName);
 
         return "hires-admin";
     }
 
     @RequestMapping(value = "/admin/hires/pay/{id}", method = RequestMethod.GET)
-
-    public String pay(Model model, @PathVariable("id") Integer id){
+    public String pay(Model model, @PathVariable("id") Integer id) {
         User loggedUser = userService.getLoggedUser();
         UserDto loggedUserDto = userService.convert(loggedUser);
+
         paymentService.pay(id);
 
         List<Hire> hires = hireService.getNotGiveBackHireList();
@@ -127,12 +124,9 @@ public String giveBack(Model model, @PathVariable("id") Long id){
 
         model.addAttribute("user", loggedUserDto);
         model.addAttribute("hires", hires);
-        model.addAttribute("showMessage", "PAY");
         model.addAttribute("sanctionUsers", sanctionUsers);
+        model.addAttribute("showMessage", "PAY");
 
         return "hires-admin";
-
     }
 }
-
-

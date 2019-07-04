@@ -11,12 +11,12 @@ import java.util.List;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
-     List<Payment>  findByUser_Id(Integer id);
-     @Query("SELECT SUM(amount) FROM Payment p WHERE p.user.id=:id")
-     BigDecimal sumPaymentByUser(Integer id);
 
-     @Transactional
-     Payment save(Payment payment);
+    List<Payment> findByUser_Id(Integer id);
 
+    @Query("SELECT SUM(amount) FROM Payment p WHERE p.user.id=:id")
+    BigDecimal sumPaymentByUser(Integer id);
 
+    @Transactional
+    Payment save(Payment payment);
 }

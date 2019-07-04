@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @PropertySource("classpath:custom.properties")
 public class AppStarter implements CommandLineRunner {
+
     @Autowired
     BookService bookService;
 
@@ -25,11 +26,9 @@ public class AppStarter implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-
     }
 
-
-      public void init(){
+    public void init(){
         Book book = new Book("Ogniem i mieczem", 2000, "PWN", "78535635634", new Author("Henryk Sienkiewicz"));
         bookService.saveBook(book);
 
@@ -40,17 +39,17 @@ public class AppStarter implements CommandLineRunner {
         bookService.saveBook(book3);
     }
 
-    public void initUsers(){
+    public void initUsers() {
         userService.createUser("admin", "pass");
 
         userService.addRoleToUser("admin", "ADMIN");
-        userService.addRoleToUser("admin","DEV");
-        userService.addRoleToUser("admin","USER");
+        userService.addRoleToUser("admin", "DEV");
+        userService.addRoleToUser("admin", "USER");
 
         userService.createUser("user", "pass");
+        userService.addRoleToUser("user", "USER");
 
-        userService.addRoleToUser("user","USER");
-
+        userService.createUser("dev", "pass");
+        userService.addRoleToUser("dev", "DEV");
     }
-
 }

@@ -15,6 +15,7 @@ public class DateUtils {
         }else
             return null;
     }
+
     public static Long daysDiff(Date first, Date second) {
         if(first != null && second != null){
             long diffInMillis = Math.abs(second.getTime() - first.getTime());

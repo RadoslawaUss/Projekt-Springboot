@@ -19,8 +19,9 @@ public class Hire {
     private User hireUser;
 
     @ManyToOne
-    @JoinColumn(name="bookId")
+    @JoinColumn(name = "bookId")
     private Book hiredBook;
+
     private BigDecimal dailyPenalty;
 
     public Long getId() {

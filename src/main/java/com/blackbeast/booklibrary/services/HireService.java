@@ -5,11 +5,9 @@ import com.blackbeast.booklibrary.domain.Hire;
 import com.blackbeast.booklibrary.domain.User;
 import com.blackbeast.booklibrary.repository.BookRepository;
 import com.blackbeast.booklibrary.repository.HireRepository;
-import com.blackbeast.booklibrary.repository.UserRepository;
 import com.blackbeast.booklibrary.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +15,16 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 @Service
 @PropertySource("classpath:custom.properties")
 public class HireService {
 
     @Autowired
     HireRepository hireRepository;
+
     @Autowired
     BookRepository bookRepository;
+
     @Autowired
     UserService userService;
 
@@ -38,21 +36,19 @@ public class HireService {
 
     public List<Hire> getHiresByBookId(Integer id) {
         return hireRepository.findByHiredBook_Id(id);
-
     }
 
     public Hire hire(Integer bookId, User user) {
-        boolean isBookAvailable = hireRepository.findBookByIdAndNotGiveBack(bookId).isEmpty();
+        boolean isBookAvailable = hireRepository.findHireByIdAndNotGiveBack(bookId).isEmpty();
 
-        if (isBookAvailable) {
+        if(isBookAvailable) {
             Book book = bookRepository.getBook(bookId);
             //User user = userService.getLoggedUser();
 
-            if (book != null && user != null) {
+            if(book != null && user != null){
                 Hire hire = new Hire();
                 hire.setHiredBook(book);
                 hire.setHireUser(user);
-
 
                 Date hireDate = new Date();
                 Date plannedGiveBackDate = DateUtils.addDaysToDate(hireDate, giveBackDays);
@@ -62,21 +58,13 @@ public class HireService {
 
                 hire.setDailyPenalty(dailyPenalty);
 
-
                 hireRepository.save(hire);
                 return hire;
-
-
             }
         }
+
         return null;
-
-
     }
-    //Hire hire = new Hire();
-    //hire.setHiredBook(bookRepository.getBook(bookId));
-    //hire.setHireUser(userService.getLoggedUser());
-    //hire.setHireDate(new Date());
 
     public List<Hire> getHireListByUserId(Integer id) {
         return hireRepository.findByHireUser_Id(id);
@@ -86,11 +74,11 @@ public class HireService {
         hireRepository.setHireAsGiveBack(id);
     }
 
-
     public List<Hire> getNotGiveBackHireList() {
         return hireRepository.findHiresNotGiveBack();
     }
-    public Hire getHireById(Long id){
+
+    public Hire getHireById(Long id) {
         return hireRepository.findById(id).get();
     }
 }

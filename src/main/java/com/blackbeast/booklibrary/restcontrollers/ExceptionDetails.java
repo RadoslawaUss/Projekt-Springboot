@@ -1,14 +1,10 @@
 package com.blackbeast.booklibrary.restcontrollers;
 
-import org.springframework.http.ResponseEntity;
-
-public class ExceptionDetail {
+public class ExceptionDetails {
     private String exceptionName;
     private String message;
 
-
-
-    public ExceptionDetail(String exceptionName, String message) {
+    public ExceptionDetails(String exceptionName, String message) {
         this.exceptionName = exceptionName;
         this.message = message;
     }
